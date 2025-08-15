@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
-import { connectDB } from "../lib/db.js"; // Adjust path if needed
+import { connectDB } from "../lib/db.js"; 
 import "dotenv/config";
-import Student from "../model/model.js"; // Import your Student model
+import Student from "../model/model.js"; 
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -10,6 +10,11 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// ✅ Root route to confirm server is running
+app.get("/", (req, res) => {
+  res.send("🎉 Backend is live and working!");
+});
 
 // CREATE student
 app.post("/students", async (req, res) => {
@@ -38,7 +43,7 @@ app.put("/students/:id", async (req, res) => {
     const updatedStudent = await Student.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true, runValidators: true } // Return updated doc & validate
+      { new: true, runValidators: true }
     );
     if (!updatedStudent) {
       return res.status(404).json({ error: "Student not found" });
@@ -67,3 +72,4 @@ app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
   connectDB();
 });
+
